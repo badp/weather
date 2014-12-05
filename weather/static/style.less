@@ -1,0 +1,190 @@
+@weather-bg: #eee;
+@weather-fg: #111;
+@weather-size: 2em;
+@weather-font-size: 20px;
+@accent: hsv(210, 1, 1.5);
+@half-accent: average(@accent, @weather-fg);
+@half-accent-2: average(@accent, @weather-bg);
+@zoom-factor: 1.2;
+@animation-speed: 0.1s;
+@spin-amt: -60deg;
+
+@color-3: hsv(210, 1, 1.5);
+@color-0: spin(@color-3, @spin-amt * -3);
+@color-1: spin(@color-3, @spin-amt * -2);
+@color-2: spin(@color-3, @spin-amt * -1);
+@color-4: spin(@color-3, @spin-amt * +1);
+@color-5: spin(@color-3, @spin-amt * +2);
+@color-6: spin(@color-3, @spin-amt * +3);
+
+.transform(@how) {
+  -webkit-transform: @how;
+  -moz-transform: @how;
+  -ms-transform: @how;
+  -o-transform: @how;
+  transform: @how;
+}
+
+.flip {
+  .transform(rotate(-180deg));
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+}
+
+.rotate {
+  .transform(rotate(90deg));
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+}
+
+.centered-text {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  height: inherit;
+  width: inherit;
+}
+
+.border-no-focus {
+  border: 1px solid white;
+}
+
+.border-focus {
+  outline: none;
+  border: 1px dotted black;
+}
+
+input.weather-choice {
+
+  // hide the actual radio circles
+  position: absolute;
+  left: -9999px;
+
+  // and style the labels
+  & + label {
+    float: left;
+    position: relative;
+    width: @weather-size;
+    height: @weather-size;
+    background: @weather-bg;
+    color: @weather-fg;
+    font-family: monospace;
+    font-weight: bold;
+    font-size: @weather-font-size;
+    margin: 3px;
+    margin-top: @weather-size * @zoom-factor / 8;
+    border-radius: @weather-size / 2;
+    transition-duration: @animation-speed;
+    .border-no-focus;
+
+    span {
+      .rotate;
+      .centered-text;
+    }
+  }
+
+  // Display RTL emoticons the right way around
+  &.choice-0 + label,
+  &.choice-6 + label, {
+    .flip;
+  }
+
+  // Give hover feedback
+  &:hover + label {
+
+    &.choice-0 {color: average(@color-0, @weather-fg)}
+    &.choice-1 {color: average(@color-1, @weather-fg)}
+    &.choice-2 {color: average(@color-2, @weather-fg)}
+    &.choice-3 {color: average(@color-3, @weather-fg)}
+    &.choice-4 {color: average(@color-4, @weather-fg)}
+    &.choice-5 {color: average(@color-5, @weather-fg)}
+    &.choice-6 {color: average(@color-6, @weather-fg)}
+
+  }
+
+  &:checked,
+  &:checked:hover {
+
+    width: @weather-size * @zoom-factor;
+    height: @weather-size * @zoom-factor;
+
+    // Zoom in and color choice
+    & + label {
+    background: @accent;
+    color: @weather-fg;
+
+    &.choice-0 {background: @color-0}
+    &.choice-1 {background: @color-1}
+    &.choice-2 {background: @color-2}
+    &.choice-3 {background: @color-3}
+    &.choice-4 {background: @color-4}
+    &.choice-5 {background: @color-5}
+    &.choice-6 {background: @color-6}
+
+    font-size: @weather-font-size * @zoom-factor;
+    margin-top: 2px;
+    margin-bottom: 10px;
+    }
+  }
+
+
+  &:focus + label {
+    .border-focus;
+  }
+
+}
+
+.weather-choice-vertical-spacer {
+  height: @weather-size * @zoom-factor + 1.5em;
+}
+
+button, input[type='submit'], .button-like {
+
+  background: @weather-bg;
+  color: @weather-fg;
+  margin-top: 1px;
+  cursor: default;
+  color: black;
+  text-decoration: none;
+  font-family: sans-serif;
+  font-size: 80%;
+
+  .border-no-focus;
+  padding: 6px;
+  transition-duration: @animation-speed;
+
+  &:focus {
+    .border-focus;
+  }
+
+  &:focus, &:hover {
+    background: @half-accent-2;
+  }
+
+
+  &:active {
+    background: @accent;
+    color: @weather-bg;
+  }
+}
+
+.clear {
+  clear: left;
+  display: inherit;
+  font-size: 100%;
+
+  &:before {
+    content: "» ";
+    font-weight: bold;
+  }
+
+}
+
+// For some reason browser tend to ship with smaller monospace font
+kbd {
+  font-size: 120%;
+  padding: 2px;
+  font-style: normal;
+  background-color: average(#eee, #fff);
+  border-radius: 5px;
+  border-bottom: 1px solid #eee;
+  border-right: 1px solid #eee;
+  }

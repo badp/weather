@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %} Weather Awereness System {% endblock %}
+{% block content %}
+  <h1>Welcome{% if user.is_authenticated %}, {{ user.username }}{% endif %}.</h1>
+  <p>Not you? <a class="button-like" href="{% url 'logout' %}">logout</a></p>
+  <em>{{ feedback }}</em>
+  <form method="POST" action="{% url 'add a vote' %}">
+
+    {% for no, choice in choices %}
+      <input name="choice"
+             class="weather-choice choice-{{no}}"
+             value="{{no}}"
+             type="radio"
+             id="weather-choice-{{no}}"
+             {% if no == 3 %}
+                autofocus
+             {% endif %}
+      />
+      <label for="weather-choice-{{no}}"
+             class="weather-choice choice-{{no}}"
+             accesskey="{{no}}">
+             <span>{{choice}}</span>
+      </label>
+    {% endfor %}
+
+    {% csrf_token %}
+    <div class="weather-choice-vertical-spacer"></div>
+
+    <button type="submit" class="clear">Submit anonymously</button>
+
+    {% if hint %}
+      <p><em>Hint: {{ hint|safe }}</em></p>
+    {% endif %}
+
+  </form>
+
+{% endblock %}
