@@ -29,7 +29,7 @@ def home_page(request):
 
   return render(
     request, "home.html",
-    {"feedback": "What sort of weather are you feeling under?",
+    {"feedback": "What is your mood like?",
      "choices": models.VOTE_CHOICES,
      "hint": random.choice(HINTS)}
   )
